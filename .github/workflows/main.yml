@@ -9,15 +9,8 @@ on:
       - main
 
 jobs:
-  build:
-    runs-on: ubuntu-22.04  # Use Ubuntu for Linux builds
-    
-    strategy:
-      matrix:
-        os: [ubuntu-22.04, macos-14]  # Use macOS 13 for macOS builds
-        python: [3.8]
-        architecture: [amd64, arm64]
-    
+  build-linux-amd64:
+    runs-on: ubuntu-22.04  # Ubuntu 22.04 for amd64 architecture
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -25,7 +18,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python }}
+          python-version: 3.8
         
       - name: Install Dependencies
         run: |
@@ -39,22 +32,117 @@ jobs:
 
       - name: Build the wheel
         run: |
-          if [[ "${{ runner.os }}" == "Linux" ]]; then
-            plat_name="linux_${{ matrix.architecture }}"
-          elif [[ "${{ runner.os }}" == "macOS" ]]; then
-            plat_name="macosx_10_14_${{ matrix.architecture }}"  # Ensure proper macOS tag for ARM64 architecture
-          fi
+          plat_name="linux_amd64"
           python setup.py bdist_wheel --plat-name=${plat_name} --python-tag=cp38
 
-      - name: Test the wheel (optional)
+      - name: Test the wheel
         run: |
-          # Install the wheel locally to test
           pip install dist/*.whl
-          # You can add your test script here
           # python -m unittest discover
 
       - name: Upload artifact (wheel file)
-        uses: actions/upload-artifact@v3  # Updated to version v3
+        uses: actions/upload-artifact@v3
         with:
-          name: fasttext-wheel
+          name: fasttext-wheel-linux-amd64
+          path: dist/*.whl
+
+  build-linux-arm64:
+    runs-on: ubuntu-22.04  # Ubuntu 22.04 for arm64 architecture
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+        
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install wheel
+
+      - name: Install build tools (Linux only)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get install build-essential python3-dev
+
+      - name: Build the wheel
+        run: |
+          plat_name="linux_arm64"
+          python setup.py bdist_wheel --plat-name=${plat_name} --python-tag=cp38
+
+      - name: Test the wheel
+        run: |
+          pip install dist/*.whl
+          # python -m unittest discover
+
+      - name: Upload artifact (wheel file)
+        uses: actions/upload-artifact@v3
+        with:
+          name: fasttext-wheel-linux-arm64
+          path: dist/*.whl
+
+  build-macos-arm64:
+    runs-on: macos-14  # macOS 14 for arm64 architecture
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+        
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install wheel
+
+      - name: Build the wheel
+        run: |
+          plat_name="macosx_10_14_arm64"
+          python setup.py bdist_wheel --plat-name=${plat_name} --python-tag=cp38
+
+      - name: Test the wheel
+        run: |
+          pip install dist/*.whl
+          # python -m unittest discover
+
+      - name: Upload artifact (wheel file)
+        uses: actions/upload-artifact@v3
+        with:
+          name: fasttext-wheel-macos-arm64
+          path: dist/*.whl
+
+  build-macos-amd64:
+    runs-on: macos-14  # macOS 14 for amd64 architecture
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+        
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install wheel
+
+      - name: Build the wheel
+        run: |
+          plat_name="macosx_10_14_amd64"
+          python setup.py bdist_wheel --plat-name=${plat_name} --python-tag=cp38
+
+      - name: Test the wheel
+        run: |
+          pip install dist/*.whl
+          # python -m unittest discover
+
+      - name: Upload artifact (wheel file)
+        uses: actions/upload-artifact@v3
+        with:
+          name: fasttext-wheel-macos-amd64
           path: dist/*.whl
