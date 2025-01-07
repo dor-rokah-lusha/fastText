@@ -101,7 +101,7 @@ jobs:
 
       - name: Build the wheel
         run: |
-          plat_name="macosx_11_0_arm64"  # Ensure correct macOS platform tag
+          plat_name="macosx_14_0_arm64"  # Ensures compatibility with macOS 14 on ARM
           python setup.py bdist_wheel --plat-name=${plat_name} --python-tag=cp38
 
       - name: Test the wheel
@@ -133,7 +133,7 @@ jobs:
 
       - name: Build the wheel
         run: |
-          plat_name="macosx_11_0_amd64"  # Ensure correct macOS platform tag
+          plat_name="macosx_14_0_amd64"  # Ensures compatibility with macOS 14 on Intel
           python setup.py bdist_wheel --plat-name=${plat_name} --python-tag=cp38
 
       - name: Test the wheel
