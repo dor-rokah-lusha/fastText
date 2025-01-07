@@ -39,7 +39,7 @@ jobs:
 
       - name: Build the wheel
         run: |
-          python setup.py bdist_wheel --plat-name=${{ runner.os }}_${{ matrix.architecture }}
+          python setup.py bdist_wheel --plat-name=${{ runner.os }}_${{ matrix.architecture }} --python-tag=cp38
 
       - name: Test the wheel (optional)
         run: |
@@ -49,7 +49,7 @@ jobs:
           # python -m unittest discover
 
       - name: Upload artifact (wheel file)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3  # Updated to version v3
         with:
           name: fasttext-wheel
           path: dist/*.whl
