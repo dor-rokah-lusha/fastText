@@ -1,0 +1,47 @@
+name: Build and Test FastText (Unified Tarball Release)
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-tarball:
+    runs-on: ubuntu-22.04  # Use Ubuntu for building the tarball (can be adjusted to macOS if needed)
+
+    strategy:
+      matrix:
+        python-version: [3.8]  # Python versions to test across
+        platform: [linux]  # Platforms to test on
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install wheel
+
+      - name: Install build tools (Linux only)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get install build-essential python3-dev
+
+      - name: Build the source tar.gz
+        run: |
+          python setup.py sdist
+
+      - name: Upload artifact (tar.gz file)
+        uses: actions/upload-artifact@v3
+        with:
+          name: fasttext-tar-${{ matrix.platform }}-${{ matrix.python-version }}
+          path: dist/*.tar.gz
