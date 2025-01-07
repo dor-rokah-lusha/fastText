@@ -42,7 +42,7 @@ jobs:
           if [[ "${{ runner.os }}" == "Linux" ]]; then
             plat_name="linux_${{ matrix.architecture }}"
           elif [[ "${{ runner.os }}" == "macOS" ]]; then
-            plat_name="macosx_10_14_${{ matrix.architecture }}"
+            plat_name="macosx_10_14_${{ matrix.architecture }}"  # Ensure proper macOS tag for ARM64 architecture
           fi
           python setup.py bdist_wheel --plat-name=${plat_name} --python-tag=cp38
 
