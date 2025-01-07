@@ -39,6 +39,10 @@ jobs:
       - name: Build the source tar.gz
         run: |
           python setup.py sdist
+          # Manually compress the .tar to .tar.gz
+          if [[ -f dist/*.tar ]]; then
+            gzip dist/*.tar
+          fi
 
       - name: Upload artifact (tar.gz file)
         uses: actions/upload-artifact@v3
