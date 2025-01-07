@@ -34,17 +34,6 @@ jobs:
         run: |
           plat_name="linux_amd64"
           python setup.py bdist_wheel --plat-name=${plat_name} --python-tag=cp38
-          
-      - name: Inspect wheel file compatibility
-        run: |
-          unzip -l dist/*.whl  # List the contents of the wheel file
-          unzip -p dist/*.whl fasttext-0.9.2+github.fork.dist-info/METADATA  # Show the METADATA content
-
-        
-      - name: Test the wheel
-        run: |
-          pip install -v dist/*.whl 
-          # python -m unittest discover
 
       - name: Upload artifact (wheel file)
         uses: actions/upload-artifact@v3
@@ -73,16 +62,6 @@ jobs:
           plat_name="macosx_14_0_arm64"  # Ensure compatibility with macOS 14 on ARM
           python setup.py bdist_wheel --plat-name=${plat_name} --python-tag=cp38
 
-      - name: Inspect wheel file compatibility
-        run: |
-          unzip -l dist/*.whl  # List the contents of the wheel file
-          unzip -p dist/*.whl fasttext-0.9.2+github.fork.dist-info/METADATA  # Show the METADATA content
-          
-      - name: Test the wheel
-        run: |
-          pip install -v dist/*.whl 
-          # python -m unittest discover
-
       - name: Upload artifact (wheel file)
         uses: actions/upload-artifact@v3
         with:
@@ -109,16 +88,6 @@ jobs:
         run: |
           plat_name="macosx_14_0_amd64"  # Ensure compatibility with macOS 14 on Intel
           python setup.py bdist_wheel --plat-name=${plat_name} --python-tag=cp38
-
-      - name: Inspect wheel file compatibility
-        run: |
-          unzip -l dist/*.whl  # List the contents of the wheel file
-          unzip -p dist/*.whl fasttext-0.9.2+github.fork.dist-info/METADATA  # Show the METADATA content
-          
-      - name: Test the wheel
-        run: |
-          pip install -v dist/*.whl 
-          # python -m unittest discover
 
       - name: Upload artifact (wheel file)
         uses: actions/upload-artifact@v3
