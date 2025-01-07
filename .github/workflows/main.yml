@@ -33,7 +33,7 @@ jobs:
       - name: Build the wheel
         run: |
           plat_name="linux_amd64"
-          python setup.py bdist_wheel --plat-name=${plat_name} --python-tag=cp38
+          python setup.py bdist_wheel --plat-name=${plat_name} --python-tag=cp39
 
       - name: Upload artifact (wheel file)
         uses: actions/upload-artifact@v3
