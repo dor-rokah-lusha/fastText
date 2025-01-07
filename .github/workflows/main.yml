@@ -39,7 +39,12 @@ jobs:
 
       - name: Build the wheel
         run: |
-          python setup.py bdist_wheel --plat-name=${{ runner.os }}_${{ matrix.architecture }} --python-tag=cp38
+          if [[ "${{ runner.os }}" == "Linux" ]]; then
+            plat_name="linux_${{ matrix.architecture }}"
+          elif [[ "${{ runner.os }}" == "macOS" ]]; then
+            plat_name="macosx_10_14_${{ matrix.architecture }}"
+          fi
+          python setup.py bdist_wheel --plat-name=${plat_name} --python-tag=cp38
 
       - name: Test the wheel (optional)
         run: |
