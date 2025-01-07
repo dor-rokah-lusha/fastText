@@ -14,7 +14,7 @@ jobs:
     
     strategy:
       matrix:
-        os: [ubuntu-22.04, macos-13]  # Use macOS 13 for macOS builds
+        os: [ubuntu-22.04, macos-14]  # Use macOS 13 for macOS builds
         python: [3.8]
         architecture: [amd64, arm64]
     
