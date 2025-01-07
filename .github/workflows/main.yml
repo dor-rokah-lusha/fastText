@@ -10,11 +10,11 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # We use Ubuntu as the base for most jobs
+    runs-on: ubuntu-latest  # Use Ubuntu for Linux builds
     
     strategy:
       matrix:
-        os: [ubuntu-20.04, macos-12]  # We will handle Linux and macOS here
+        os: [ubuntu-22.04, macos-13]  # Use macOS 13 for macOS builds
         python: [3.8]
         architecture: [amd64, arm64]
     
@@ -49,13 +49,13 @@ jobs:
           python -m unittest discover
 
       - name: Upload artifact (wheel file)
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3  # Updated to version v3
         with:
           name: fasttext-wheel
           path: dist/*.whl
 
   macos_build:
-    runs-on: macos-12
+    runs-on: macos-13  # Use macOS 13 for macOS builds
     strategy:
       matrix:
         python: [3.8]
@@ -79,7 +79,7 @@ jobs:
           python setup.py bdist_wheel
 
       - name: Upload artifact (wheel file)
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3  # Updated to version v3
         with:
           name: fasttext-wheel
           path: dist/*.whl
