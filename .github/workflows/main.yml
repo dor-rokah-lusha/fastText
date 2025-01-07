@@ -47,7 +47,7 @@ jobs:
           path: dist/*.whl
 
   build-linux-arm64:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-22.04-arm64
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -84,7 +84,7 @@ jobs:
           path: dist/*.whl
 
   build-macos-arm64:
-    runs-on: macos-14
+    runs-on: macos-14-arm64  # Explicitly use macOS ARM64 runner
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -101,7 +101,7 @@ jobs:
 
       - name: Build the wheel
         run: |
-          plat_name="macosx_14_0_arm64"  # Ensures compatibility with macOS 14 on ARM
+          plat_name="macosx_14_0_arm64"  # Ensure compatibility with macOS 14 on ARM
           python setup.py bdist_wheel --plat-name=${plat_name} --python-tag=cp38
 
       - name: Test the wheel
@@ -116,7 +116,7 @@ jobs:
           path: dist/*.whl
 
   build-macos-amd64:
-    runs-on: macos-14
+    runs-on: macos-14-x86_64  # Explicitly use macOS Intel runner (AMD64)
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -133,7 +133,7 @@ jobs:
 
       - name: Build the wheel
         run: |
-          plat_name="macosx_14_0_amd64"  # Ensures compatibility with macOS 14 on Intel
+          plat_name="macosx_14_0_amd64"  # Ensure compatibility with macOS 14 on Intel
           python setup.py bdist_wheel --plat-name=${plat_name} --python-tag=cp38
 
       - name: Test the wheel
