@@ -37,7 +37,7 @@ jobs:
 
       - name: Test the wheel
         run: |
-          pip install dist/*.whl
+          pip install -v dist/*.whl 
           # python -m unittest discover
 
       - name: Upload artifact (wheel file)
@@ -69,7 +69,7 @@ jobs:
 
       - name: Test the wheel
         run: |
-          pip install dist/*.whl
+          pip install -v dist/*.whl 
           # python -m unittest discover
 
       - name: Upload artifact (wheel file)
@@ -101,7 +101,7 @@ jobs:
 
       - name: Test the wheel
         run: |
-          pip install dist/*.whl
+          pip install -v dist/*.whl 
           # python -m unittest discover
 
       - name: Upload artifact (wheel file)
