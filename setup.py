@@ -21,7 +21,7 @@ import subprocess
 import platform
 import io
 
-__version__ = '0.9.2'
+__version__ = '0.9.2+github.fork'
 FASTTEXT_SRC = "src"
 
 # Based on https://github.com/pybind/python_example
