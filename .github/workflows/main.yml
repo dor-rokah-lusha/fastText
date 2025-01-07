@@ -1,0 +1,85 @@
+name: Build and Test FastText
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # We use Ubuntu as the base for most jobs
+    
+    strategy:
+      matrix:
+        os: [ubuntu-20.04, macos-12]  # We will handle Linux and macOS here
+        python: [3.8]
+        architecture: [amd64, arm64]
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+        
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install build tools (Linux only)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get install build-essential python3-dev
+
+      - name: Build the wheel
+        run: |
+          python setup.py bdist_wheel
+
+      - name: Test the wheel (optional)
+        run: |
+          # Install the wheel locally to test
+          pip install dist/*.whl
+          # You can add your test script here
+          python -m unittest discover
+
+      - name: Upload artifact (wheel file)
+        uses: actions/upload-artifact@v2
+        with:
+          name: fasttext-wheel
+          path: dist/*.whl
+
+  macos_build:
+    runs-on: macos-12
+    strategy:
+      matrix:
+        python: [3.8]
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Build the wheel
+        run: |
+          python setup.py bdist_wheel
+
+      - name: Upload artifact (wheel file)
+        uses: actions/upload-artifact@v2
+        with:
+          name: fasttext-wheel
+          path: dist/*.whl
