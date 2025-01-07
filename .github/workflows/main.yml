@@ -33,6 +33,38 @@ jobs:
       - name: Build the wheel
         run: |
           plat_name="linux_amd64"
+          python setup.py bdist_wheel --plat-name=${plat_name} --python-tag=cp38
+
+      - name: Upload artifact (wheel file)
+        uses: actions/upload-artifact@v3
+        with:
+          name: fasttext-wheel-linux-amd64
+          path: dist/*.whl
+
+  build-linux-amd64-py39:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install wheel
+
+      - name: Install build tools (Linux only)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get install build-essential python3-dev
+
+      - name: Build the wheel
+        run: |
+          plat_name="linux_amd64"
           python setup.py bdist_wheel --plat-name=${plat_name} --python-tag=cp39
 
       - name: Upload artifact (wheel file)
@@ -40,6 +72,7 @@ jobs:
         with:
           name: fasttext-wheel-linux-amd64
           path: dist/*.whl
+
 
   build-macos-arm64:
     runs-on: macos-14  # Explicitly use macOS ARM64 runner
@@ -77,7 +110,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9.18
+          python-version: 3.9
 
       - name: Install Dependencies
         run: |
@@ -87,7 +120,7 @@ jobs:
       - name: Build the wheel
         run: |
           plat_name="macosx_14_0_arm64"  # Ensure compatibility with macOS 14 on ARM
-          python setup.py bdist_wheel --plat-name=${plat_name} --python-tag=cp38
+          python setup.py bdist_wheel --plat-name=${plat_name} --python-tag=cp39
 
       - name: Upload artifact (wheel file)
         uses: actions/upload-artifact@v3
