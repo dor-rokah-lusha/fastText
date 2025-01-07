@@ -69,7 +69,7 @@ jobs:
           path: dist/*.whl
 
   build-macos-amd64:
-    runs-on: macos-14-large  # Explicitly use macOS Intel runner (AMD64)
+    runs-on: macos-13-large  # Explicitly use macOS Intel runner (AMD64)
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -86,7 +86,7 @@ jobs:
 
       - name: Build the wheel
         run: |
-          plat_name="macosx_14_0_amd64"  # Ensure compatibility with macOS 14 on Intel
+          plat_name="macosx_13_0_amd64"  # Ensure compatibility with macOS 14 on Intel
           python setup.py bdist_wheel --plat-name=${plat_name} --python-tag=cp38
 
       - name: Upload artifact (wheel file)
